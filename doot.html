@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>موقع أسئلة عامة</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      direction: rtl;
+    }
+    .container {
+      width: 60%;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h1 {
+      color: #333;
+    }
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    .answer {
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background: #007BFF;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>أسئلة عامة</h1>
+    <div class="question">ما هي عاصمة المغرب؟</div>
+    <div class="answer">
+      <button onclick="checkAnswer('الرباط')">الرباط</button>
+      <button onclick="checkAnswer('الدار البيضاء')">الدار البيضاء</button>
+      <button onclick="checkAnswer('مراكش')">مراكش</button>
+    </div>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function checkAnswer(answer) {
+      let result = document.getElementById("result");
+      if (answer === "الرباط") {
+        result.textContent = "✔️ إجابة صحيحة!";
+        result.style.color = "green";
+      } else {
+        result.textContent = "❌ إجابة خاطئة، حاول مرة أخرى.";
+        result.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
