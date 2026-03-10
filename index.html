@@ -865,8 +865,8 @@
       <li><a href="#home">الرئيسية</a></li>
       <li><a href="#categories">التصنيفات</a></li>
       <li><a href="#products">المنتجات</a></li>
-      <li><a href="#order">اطلب الآن</a></li>
       <li><a href="#contact">اتصل بنا</a></li>
+      <li><a href="second.html">معلومات الشراء</a></li>
     </ul>
   </nav>
 </header>
@@ -1080,54 +1080,6 @@
   </div>
 </div>
 
-<!-- ORDER FORM -->
-<section class="section" id="order">
-  <div class="section-center">
-    <div class="section-head">
-      <div class="section-tag">اطلب الآن</div>
-      <h2>نموذج طلب المنتجات</h2>
-      <p>املأ النموذج أدناه لطلب منتجاتنا وسيتم التواصل معك قريباً</p>
-      <div class="divider"></div>
-    </div>
-    <div style="max-width: 600px; margin: 0 auto;">
-      <form id="orderForm" style="display: grid; gap: 20px;">
-        <div>
-          <label for="name" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">الاسم الكامل *</label>
-          <input type="text" id="name" name="name" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Cairo', sans-serif; font-size: 14px;">
-        </div>
-        <div>
-          <label for="city" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">المدينة *</label>
-          <input type="text" id="city" name="city" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Cairo', sans-serif; font-size: 14px;">
-        </div>
-        <div>
-          <label for="email" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">البريد الإلكتروني *</label>
-          <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Cairo', sans-serif; font-size: 14px;">
-        </div>
-        <div>
-          <label for="phone" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">رقم الهاتف *</label>
-          <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Cairo', sans-serif; font-size: 14px;">
-        </div>
-        <div>
-          <label for="product" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">المنتج المطلوب *</label>
-          <select id="product" name="product" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Cairo', sans-serif; font-size: 14px;">
-            <option value="">اختر المنتج</option>
-            <option value="بدلة رسمية فاخرة">بدلة رسمية فاخرة</option>
-            <option value="قميص أكسفورد كلاسيكي">قميص أكسفورد كلاسيكي</option>
-            <option value="فستان سهرة راقٍ">فستان سهرة راقٍ</option>
-            <option value="عباءة مطرزة فاخرة">عباءة مطرزة فاخرة</option>
-            <option value="طقم أطفال صيفي">طقم أطفال صيفي</option>
-            <option value="حذاء رياضي أديداس">حذاء رياضي أديداس</option>
-            <option value="معطف شتوي كاشمير">معطف شتوي كاشمير</option>
-            <option value="بنطلون جينز سليم فيت">بنطلون جينز سليم فيت</option>
-            <option value="حذاء كعب عالٍ أنيق">حذاء كعب عالٍ أنيق</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 20px;">إرسال الطلب</button>
-      </form>
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer id="contact">
   <div class="footer-top">
@@ -1340,8 +1292,8 @@
 
   function handleCheckout() {
     if (!cart.length) { showToast('⚠ السلة فارغة'); return; }
-    showToast('✓ تم تحويلك لصفحة الدفع');
-    toggleCart();
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'second.html';
   }
 
   // ── TOAST ──
@@ -1359,43 +1311,6 @@
     showToast('✓ تم الاشتراك بنجاح! شكراً لك');
     input.value = '';
   }
-
-  // ── ORDER FORM ──
-  function handleOrderForm(event) {
-    event.preventDefault();
-    
-    const form = document.getElementById('orderForm');
-    const formData = new FormData(form);
-    
-    const data = {
-      name: formData.get('name'),
-      city: formData.get('city'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      product: formData.get('product')
-    };
-
-    // إرسال البيانات إلى Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbzj7GFQXD3j8ckoaJWAw1QG2HVB_fFJkeY6rP05Mzx83q_ZhAbg8MFzvHixu-I416ft/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      showToast('✓ تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً');
-      form.reset();
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      showToast('⚠ حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى');
-    });
-  }
-
-  // إضافة event listener للنموذج
-  document.getElementById('orderForm').addEventListener('submit', handleOrderForm);
 
   // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
