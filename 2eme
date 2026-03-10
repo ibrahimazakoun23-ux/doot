@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معلومات الشراء</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #fdfcfa;
+      color: #2a2a2a;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    header { margin-bottom: 40px; }
+    a.back-link { color: #C9A84C; text-decoration: none; font-weight: 600; }
+    form { display: inline-block; margin-top: 20px; text-align: right; max-width: 500px; width: 100%; }
+    input[type="text"], input[type="email"], input[type="tel"] {
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      margin-bottom: 15px;
+      font-family: 'Cairo', sans-serif;
+      box-sizing: border-box;
+    }
+    label { display: block; margin-bottom: 5px; font-weight: 600; color: #2a2a2a; }
+    button {
+      padding: 12px 24px;
+      background: #C9A84C;
+      color: #0f0f0f;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
+      width: 100%;
+    }
+    button:hover { background: #e8c96e; }
+    .cart-summary {
+      margin-bottom: 30px;
+      text-align: right;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item img {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .cart-item-price {
+      color: #C9A84C;
+      font-weight: 700;
+    }
+    .cart-total {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f0f0f;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back-link" href="index.html">&larr; العودة إلى الصفحة الرئيسية</a>
+  </header>
+  <h1>معلومات الشراء</h1>
+  <p>يرجى إدخال معلوماتك لإتمام عملية الشراء.</p>
+
+  <div class="cart-summary" id="cartSummary">
+    <!-- المنتجات ستُعرض هنا -->
+  </div>
+
+  <form id="purchaseForm">
+    <div>
+      <label for="name">الاسم الكامل *</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div>
+      <label for="city">المدينة *</label>
+      <input type="text" id="city" name="city" required />
+    </div>
+    <div>
+      <label for="email">البريد الإلكتروني *</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div>
+      <label for="phone">رقم الهاتف *</label>
+      <input type="tel" id="phone" name="phone" required />
+    </div>
+    <button type="submit">إرسال الطلب</button>
+  </form>
+
+  <script>
+    <base href="./">
+    
+    window.onload = function() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cartSummary = document.getElementById('cartSummary');
+      if (cart.length === 0) {
+        cartSummary.innerHTML = '<p>لا توجد منتجات في السلة.</p>';
+        return;
+      }
+      let total = 0;
+      cartSummary.innerHTML = '<h3>المنتجات المختارة:</h3>' + cart.map(item => {
+        total += item.price * item.qty;
+        return `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price} MAD × ${item.qty} = ${(item.price * item.qty).toLocaleString('ar')} MAD</div>
+            </div>
+          </div>
+        `;
+      }).join('') + `<div class="cart-total">الإجمالي: ${total.toLocaleString('ar')} MAD</div>`;
+    };
+
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = document.getElementById('name').value;
+      var city = document.getElementById('city').value;
+      var email = document.getElementById('email').value;
+      var phone = document.getElementById('phone').value;
+      if (name.trim() === '' || city.trim() === '' || email.trim() === '' || phone.trim() === '') {
+        alert('يرجى ملء جميع الحقول.');
+        return;
+      }
+      // هنا يمكن إضافة منطق الإرسال الفعلي
+      alert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.');
+      localStorage.removeItem('cart'); // مسح السلة بعد الإرسال
+      window.location.href = 'third.html';
+    });
+  </script>
+</body>
+</html>
